@@ -4,7 +4,6 @@
  */
 package lab1p2_joseacosta;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,7 +42,11 @@ public class Lab1P2_JoseAcosta {
                     break;
 
                 case 2:
-                    System.out.println("Su lista seria la siguiente: ");
+                    if(usuarios.isEmpty()){
+                        System.out.println("No hay ningun usuario registrado. Disculpenos");
+                    }else
+
+                    System.out.println("Lista de Usuarios:");
                     listarTodos();
                     break;
 
@@ -76,19 +79,12 @@ public class Lab1P2_JoseAcosta {
         System.out.println("Ingresa tu contraseña: ");
         String contraseña = entrada.nextLine();
 
-        if (!validarFechaNacimiento(fechaNacimiento)) {
-            mostrarError("La fecha de nacimiento no es válida.");
-            return;
-        }
+
         
         if(!validarContraseña(contraseña)){
             mostrarError("Su contraseña no es valida");
         }
 
-        if (!validarCorreo(correo)) {
-            mostrarError("El correo electrónico no es válido.");
-            return;
-        }
 
         if (existeUsuarioConCorreo(correo)) {
             mostrarError("Ya existe un usuario con el mismo correo electrónico.");
@@ -103,25 +99,64 @@ public class Lab1P2_JoseAcosta {
     }
     
 
-        private static boolean validarFechaNacimiento(String fechaNacimiento) {
+       
 
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-    Date fechaNacimientoDate = null;
-    try {
-        fechaNacimientoDate = sdf.parse(fechaNacimiento);
-    } catch (ParseException e) {
+    private static boolean validarContraseña(String contraseña) {
+    if (contraseña.length() < 8) {
+        return false;
+    }
+    boolean contieneMayuscula = false;
+    boolean contieneMinuscula = false;
+    boolean contieneNumero = false;
+    boolean contieneSimbolo = false;
+
+    for (char caracter : contraseña.toCharArray()) {
+        if (Character.isUpperCase(caracter)) {
+            contieneMayuscula = true;
+        } else if (Character.isLowerCase(caracter)) {
+            contieneMinuscula = true;
+        } else if (Character.isDigit(caracter)) {
+            contieneNumero = true;
+        } else if ("!?,<>$%".indexOf(caracter) != -1) {
+            contieneSimbolo = true;
+        }
+    }
+    return contieneMayuscula && contieneMinuscula && contieneNumero && contieneSimbolo;
+}
+    
+    private static void listarTodos() {
+        for (Usuario usuario : usuarios) {
+            System.out.println(usuario);
+        }
     }
 
-    if (fechaNacimientoDate == null) {
-        return false; 
-    }
 
-    Date fechaActual = new Date();
-    long edad = (long) ((fechaActual.getTime() - fechaNacimientoDate.getTime()) / (1000 * 60 * 60 * 24 * 365.25));
-    return edad >= 13;
+    private static void mostrarError(String mensaje) {
+    System.out.println("Error: " + mensaje);
 }
 
-    
+private static void mostrarMensaje(String mensaje) {
+    System.out.println(mensaje);
+}
+
+private static void listarUsuariosPorDominio() {
+        Scanner entrada = new Scanner(System.in);
+
+        System.out.print("Ingrese el dominio: ");
+        String dominio = entrada.nextLine();
+
+        for (Usuario usuario : usuarios) {
+            String correoElectronico = usuario.getCorreo();
+            if (correoElectronico.toLowerCase().endsWith(dominio.toLowerCase())) {
+                System.out.println("Nombre: " + usuario.getNombre());
+                System.out.println("Apellido: " + usuario.getApellido());
+                System.out.println("Fecha de Nacimiento: " + usuario.getCumpleaños());
+                System.out.println("Correo Electrónico: " + correoElectronico);
+                System.out.println("Contraseña: " + usuario.getContraseña());
+
+            }
+}
+}
     
     private static boolean existeUsuarioConCorreo(String correo) {
         for (Usuario usuario : usuarios) {
@@ -132,21 +167,7 @@ public class Lab1P2_JoseAcosta {
 
         return false;
     }
-    
-    private static boolean validarCorreo(String correo) {
-
-    if (!correo.matches("^[a-zA-Z0-9-_&$%]+@[a-zA-Z0-9-_&$%]+\\.(gmail|outlook|yahoo|icloud|protonmail|fastmail)$")) {
-        return false;
-    }
-
-    for (Usuario usuario : usuarios) {
-        if (usuario.getCorreo().equals(correo)) {
-            return false;
-        }
-    }
-
-    return true;
 }
     
-}
+
 

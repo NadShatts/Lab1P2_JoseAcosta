@@ -48,14 +48,19 @@ public class Usuario {
         return contraseña;
     }
 
+
+
+    
     public String toString() {
             return String.format(
+                    "\n" +
                     "Nombre: %s\n" +
                     "Apellido: %s\n" +
                     "Fecha de nacimiento: %s\n" +
                     "Correo electrónico: %s\n" +
                     "Contraseña: %s",
                     nombre, apellido, cumpleaños, correo, contraseña);
+            
         }
     
 }
