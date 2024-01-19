@@ -80,9 +80,19 @@ public class Lab1P2_JoseAcosta {
         String contraseña = entrada.nextLine();
 
 
+        if(!validarFechaNacimiento(fechaNacimiento)){
+            mostrarError("Fecha de nacimiento no valida");
+        }
+        
+        
+        if(!validarCorreoElectronico(correo)){
+            mostrarError("Correo no valido");
+            
+        }
         
         if(!validarContraseña(contraseña)){
             mostrarError("Su contraseña no es valida");
+            
         }
 
 
@@ -98,8 +108,28 @@ public class Lab1P2_JoseAcosta {
         mostrarMensaje("Usuario registrado correctamente.");
     }
     
+        private static boolean validarFechaNacimiento(String fechaNacimiento) {
+            
+        String[] partesFecha = fechaNacimiento.split("/");
+        int dia = Integer.parseInt(partesFecha[0]);
+        int mes = Integer.parseInt(partesFecha[1]);
+        int año = Integer.parseInt(partesFecha[2]);
 
-       
+        java.util.Date fechaActual = new java.util.Date();
+
+        java.util.Calendar calendarNacimiento = java.util.Calendar.getInstance();
+        calendarNacimiento.set(año, mes - 1, dia);
+        java.util.Calendar calendarActual = java.util.Calendar.getInstance();
+        calendarActual.setTime(fechaActual);
+        int edad = calendarActual.get(java.util.Calendar.YEAR) - calendarNacimiento.get(java.util.Calendar.YEAR);
+        if (calendarActual.get(java.util.Calendar.MONTH) < calendarNacimiento.get(java.util.Calendar.MONTH)
+                || (calendarActual.get(java.util.Calendar.MONTH) == calendarNacimiento.get(java.util.Calendar.MONTH)
+                && calendarActual.get(java.util.Calendar.DAY_OF_MONTH) < calendarNacimiento.get(java.util.Calendar.DAY_OF_MONTH))) {
+            edad--;
+        }
+
+        return edad >= 13;
+    }
 
     private static boolean validarContraseña(String contraseña) {
     if (contraseña.length() < 8) {
@@ -125,10 +155,21 @@ public class Lab1P2_JoseAcosta {
 }
     
     private static void listarTodos() {
-        for (Usuario usuario : usuarios) {
-            System.out.println(usuario);
-        }
+       for (Usuario usuario : usuarios) {
+            String correoElectronico = usuario.getCorreo();
+                System.out.println("Nombre: " + usuario.getNombre());
+                System.out.println("Apellido: " + usuario.getApellido());
+                System.out.println("Edad: " + usuario.getEdad());
+                System.out.println("Correo Electrónico: " + correoElectronico);
+                System.out.println("Contraseña: " + usuario.getContraseña());
+
+  
+       }
     }
+    
+    private static boolean validarCorreoElectronico(String correoElectronico) {
+    return correoElectronico.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+}
 
 
     private static void mostrarError(String mensaje) {
@@ -150,7 +191,7 @@ private static void listarUsuariosPorDominio() {
             if (correoElectronico.toLowerCase().endsWith(dominio.toLowerCase())) {
                 System.out.println("Nombre: " + usuario.getNombre());
                 System.out.println("Apellido: " + usuario.getApellido());
-                System.out.println("Fecha de Nacimiento: " + usuario.getCumpleaños());
+                System.out.println("Edad: " + usuario.getEdad());
                 System.out.println("Correo Electrónico: " + correoElectronico);
                 System.out.println("Contraseña: " + usuario.getContraseña());
 
