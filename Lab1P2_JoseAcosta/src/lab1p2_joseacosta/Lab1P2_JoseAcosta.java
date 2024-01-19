@@ -4,7 +4,10 @@
  */
 package lab1p2_joseacosta;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -41,10 +44,11 @@ public class Lab1P2_JoseAcosta {
 
                 case 2:
                     System.out.println("Su lista seria la siguiente: ");
-                    listarTodo();
+                    listarTodos();
                     break;
 
                 case 3:
+                    listarUsuariosPorDominio();
                     break;
 
                 case 4:
@@ -61,32 +65,88 @@ public class Lab1P2_JoseAcosta {
 
     private static void registroUsuario() {
         Scanner entrada = new Scanner(System.in);
-        System.out.println("Ingrese la información del usuario:");
-        System.out.print("Nombre: ");
+        System.out.println("Ingresa tu nombre: ");
         String nombre = entrada.nextLine();
-        System.out.print("Apellido: ");
+        System.out.println("Ingresa tu apellido: ");
         String apellido = entrada.nextLine();
-        System.out.print("Fecha de Nacimiento (AAAA-MM-DD): ");
+        System.out.println("Ingresa tu fecha de nacimiento (dd/mm/aaaa): ");
         String fechaNacimiento = entrada.nextLine();
-        System.out.print("Correo Electrónico: ");
-        String correoElectronico = entrada.nextLine();
-        System.out.print("Contraseña: ");
+        System.out.println("Ingresa tu correo electrónico: ");
+        String correo = entrada.nextLine();
+        System.out.println("Ingresa tu contraseña: ");
         String contraseña = entrada.nextLine();
 
+        if (!validarFechaNacimiento(fechaNacimiento)) {
+            mostrarError("La fecha de nacimiento no es válida.");
+            return;
+        }
         
-        Usuario usuario = new Usuario(nombre, apellido, fechaNacimiento, correoElectronico, contraseña);
-        usuarios.add(usuario);
-        System.out.println("Usuario registrado exitosamente.");
+        if(!validarContraseña(contraseña)){
+            mostrarError("Su contraseña no es valida");
+        }
 
+        if (!validarCorreo(correo)) {
+            mostrarError("El correo electrónico no es válido.");
+            return;
+        }
+
+        if (existeUsuarioConCorreo(correo)) {
+            mostrarError("Ya existe un usuario con el mismo correo electrónico.");
+            return;
+        }
+
+        Usuario usuario = new Usuario(nombre, apellido, fechaNacimiento, correo, contraseña);
+
+        usuarios.add(usuario);
+
+        mostrarMensaje("Usuario registrado correctamente.");
     }
     
+
+        private static boolean validarFechaNacimiento(String fechaNacimiento) {
+
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    Date fechaNacimientoDate = null;
+    try {
+        fechaNacimientoDate = sdf.parse(fechaNacimiento);
+    } catch (ParseException e) {
+    }
+
+    if (fechaNacimientoDate == null) {
+        return false; 
+    }
+
+    Date fechaActual = new Date();
+    long edad = (long) ((fechaActual.getTime() - fechaNacimientoDate.getTime()) / (1000 * 60 * 60 * 24 * 365.25));
+    return edad >= 13;
+}
+
     
-    private static void listarTodo(){
-        
+    
+    private static boolean existeUsuarioConCorreo(String correo) {
         for (Usuario usuario : usuarios) {
-            System.out.println(usuario.toString());
+            if (usuario.getCorreo().equals(correo)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    private static boolean validarCorreo(String correo) {
+
+    if (!correo.matches("^[a-zA-Z0-9-_&$%]+@[a-zA-Z0-9-_&$%]+\\.(gmail|outlook|yahoo|icloud|protonmail|fastmail)$")) {
+        return false;
+    }
+
+    for (Usuario usuario : usuarios) {
+        if (usuario.getCorreo().equals(correo)) {
+            return false;
         }
     }
-    }
+
+    return true;
+}
     
+}
 
