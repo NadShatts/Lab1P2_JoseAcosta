@@ -44,7 +44,7 @@ public class Lab1P2_JoseAcosta {
                         System.out.println("No hay ningun usuario registrado. Disculpenos");
                     }else{
 
-                    System.out.println("Lista de Usuarios:");
+                    System.out.println("Lista de Usuarios Registrados:");
                     listarTodos();
                     }
                     break;
@@ -84,7 +84,7 @@ public class Lab1P2_JoseAcosta {
    
   
             if(!validarCorreoElectronico(correo)){
-            mostrarError("Correo no valido");
+            mostrarError("Correo no valido o Correo ya Registrado");
             return;
 
         }
@@ -100,17 +100,11 @@ public class Lab1P2_JoseAcosta {
             
         }
 
-
-        if (existeUsuarioConCorreo(correo)) {
-            mostrarError("Ya existe un usuario con el mismo correo electrónico.");
-            return;
-        }
-
         Usuario usuario = new Usuario(nombre, apellido, fechaNacimiento, correo, contraseña);
 
         usuarios.add(usuario);
 
-        mostrarMensaje("Usuario registrado correctamente.");
+        mostrarMensaje("Usuario registrado correctamente. Felicidades");
         
          
     }
@@ -193,17 +187,18 @@ public class Lab1P2_JoseAcosta {
     private static void listarTodos() {
        for (Usuario usuario : usuarios) {
             String correoElectronico = usuario.getCorreo();
+            int contador = 1;
+            System.out.println("");
+            System.out.println("Usuario numero "+contador);
                 System.out.println("Nombre: " + usuario.getNombre());
                 System.out.println("Apellido: " + usuario.getApellido());
                 System.out.println("Edad: " + usuario.getEdad());
                 System.out.println("Correo Electrónico: " + correoElectronico);
                 System.out.println("Contraseña: " + usuario.getContraseña());
+                contador++;
        }
     }
     
-    
-
-
     private static void mostrarError(String mensaje) {
     System.out.println("Error: " + mensaje);
 }
@@ -220,27 +215,22 @@ private static void listarUsuariosPorDominio() {
 
         for (Usuario usuario : usuarios) {
             String correoElectronico = usuario.getCorreo();
+            int contador = 1;
             if (correoElectronico.toLowerCase().endsWith(dominio.toLowerCase())) {
+                System.out.println("");
+                System.out.println("Usuario numero "+contador);
                 System.out.println("Nombre: " + usuario.getNombre());
                 System.out.println("Apellido: " + usuario.getApellido());
                 System.out.println("Edad: " + usuario.getEdad());
                 System.out.println("Correo Electrónico: " + correoElectronico);
                 System.out.println("Contraseña: " + usuario.getContraseña());
+                contador++;
 
             }
 }
 }
-    
-    private static boolean existeUsuarioConCorreo(String correo) {
-        for (Usuario usuario : usuarios) {
-            if (usuario.getCorreo().equals(correo)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 }
+
     
 
 
