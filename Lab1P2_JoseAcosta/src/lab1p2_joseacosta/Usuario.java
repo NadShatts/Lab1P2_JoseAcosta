@@ -4,6 +4,9 @@
  */
 package lab1p2_joseacosta;
 
+import java.util.Date;
+import java.util.Calendar;
+
 /**
  *
  * @author josed
@@ -54,19 +57,19 @@ public class Usuario {
         int mes = Integer.parseInt(partesFecha[1]);
         int año = Integer.parseInt(partesFecha[2]);
 
-        java.util.Date fechaActual = new java.util.Date();
+   Date fechaActual = new Date();
 
-        java.util.Calendar calendarNacimiento = java.util.Calendar.getInstance();
-        calendarNacimiento.set(año, mes - 1, dia);
-        java.util.Calendar calendarActual = java.util.Calendar.getInstance();
+        Calendar calendarioNacimiento = Calendar.getInstance();
+        calendarioNacimiento.set(año, mes - 1, dia);
+        Calendar calendarActual = java.util.Calendar.getInstance();
         calendarActual.setTime(fechaActual);
 
-        int diferenciaAños = calendarActual.get(java.util.Calendar.YEAR) - calendarNacimiento.get(java.util.Calendar.YEAR);
-        int diferenciaMeses = calendarActual.get(java.util.Calendar.MONTH) - calendarNacimiento.get(java.util.Calendar.MONTH);
-        int diferenciaDias = calendarActual.get(java.util.Calendar.DAY_OF_MONTH) - calendarNacimiento.get(java.util.Calendar.DAY_OF_MONTH);
+        int diferenciaAños = calendarActual.get(java.util.Calendar.YEAR) - calendarioNacimiento.get(java.util.Calendar.YEAR);
+        int diferenciaMeses = calendarActual.get(java.util.Calendar.MONTH) - calendarioNacimiento.get(java.util.Calendar.MONTH);
+        int diferenciaDias = calendarActual.get(java.util.Calendar.DAY_OF_MONTH) - calendarioNacimiento.get(java.util.Calendar.DAY_OF_MONTH);
 
         if (diferenciaDias < 0) {
-            int ultimoDiaDelMesNacimiento = calendarNacimiento.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
+            int ultimoDiaDelMesNacimiento = calendarioNacimiento.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
             diferenciaDias = ultimoDiaDelMesNacimiento + diferenciaDias;
             diferenciaMeses--; 
         }
@@ -76,7 +79,7 @@ public class Usuario {
             diferenciaAños--; 
         }
 
-        return diferenciaAños + " años, " + diferenciaMeses + " meses, " + diferenciaDias + " días";
+        return diferenciaAños + " años, " + diferenciaMeses + " meses  y " + diferenciaDias + " días";
     }
 }
 

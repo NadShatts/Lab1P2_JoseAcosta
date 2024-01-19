@@ -7,6 +7,7 @@ package lab1p2_joseacosta;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Date;
+import java.util.Calendar;
 
 /**
  *
@@ -15,8 +16,7 @@ import java.util.Date;
 public class Lab1P2_JoseAcosta {
 
     private static ArrayList<Usuario> usuarios = new ArrayList<>();
-    private static final String[] ACCEPTED_DOMAINS = {"gmail.com", "outlook.com", "yahoo.com", "icloud.com", "protonmail.com", "fastmail.com"};
-
+   
     /**
      * @param args the command line arguments
      */
@@ -48,15 +48,14 @@ public class Lab1P2_JoseAcosta {
                         System.out.println("Lista de Usuarios Registrados:");
                         for (Usuario usuario : usuarios) {
             String correoElectronico = usuario.getCorreo();
-            int contador = 1;
             System.out.println("");
-            System.out.println("Usuario numero " + contador);
+            System.out.println("Usuario."); 
             System.out.println("Nombre: " + usuario.getNombre());
             System.out.println("Apellido: " + usuario.getApellido());
             System.out.println("Edad: " + usuario.getEdad());
             System.out.println("Correo Electrónico: " + correoElectronico);
             System.out.println("Contraseña: " + usuario.getContraseña());
-            contador++;
+
         }
     }
                     break;
@@ -95,10 +94,11 @@ public class Lab1P2_JoseAcosta {
         System.out.println("Ingresa tu contraseña: ");
         String contraseña = entrada.nextLine();
 
-        if (!validarCorreoElectronico(correo)) {
-            mostrarError("Correo no valido o Correo ya Registrado. Vuelva a intentarlo");
+         if (!validarCorreoElectronico(correo)) {
+            System.out.println("Correo electrónico no válido o ya registrado.");
             return;
         }
+         
         if (!validarFechaNacimiento(fechaNacimiento)) {
             mostrarError("Fecha de nacimiento no valida. Vuelva a intentarlo");
             return;
@@ -116,18 +116,29 @@ public class Lab1P2_JoseAcosta {
 
     }
 
-    private static boolean validarCorreoElectronico(String correo) {
-        String verificar = "^[a-zA-Z0-9_.%&$-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+   private static boolean validarCorreoElectronico(String correo) {
+    String verificar = "^[a-zA-Z0-9_.%&$-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 
-        String[] correo1 = correo.split("@");
-        String nombreUsuario = correo1[0];
-        String dominio = correo1[1].toLowerCase();
+    String[] correo1 = correo.split("@");
+    String nombreUsuario = correo1[0];
+    String dominio = correo1[1].toLowerCase();
 
-        if (!correo.matches(verificar) || existeUsuario(nombreUsuario, dominio)) {
-            return false;
+    if (!correo.matches(verificar) || existeUsuario(nombreUsuario, dominio) || !esDominioValido(dominio)) {
+        return false;
+    } 
+    return true;
+}
+
+private static boolean esDominioValido(String dominio) {
+    String[] aceptado = {"gmail.com", "outlook.com", "yahoo.com", "icloud.com", "protonmail.com", "fastmail.com"};
+
+    for (String dominioAceptado : aceptado) {
+        if (dominio.equals(dominioAceptado)) {
+            return true;
         }
-        return true;
     }
+    return false;
+}
 
     private static boolean existeUsuario(String nombreUsuario, String dominio) {
         for (Usuario usuario : usuarios) {
@@ -150,16 +161,16 @@ public class Lab1P2_JoseAcosta {
         int mes = Integer.parseInt(fechas[1]);
         int año = Integer.parseInt(fechas[2]);
 
-        java.util.Date fechaActual = new java.util.Date();
+        Date fechaActual = new Date();
 
-        java.util.Calendar calendarNacimiento = java.util.Calendar.getInstance();
-        calendarNacimiento.set(año, mes - 1, dia);
-        java.util.Calendar calendarActual = java.util.Calendar.getInstance();
-        calendarActual.setTime(fechaActual);
-        int edad = calendarActual.get(java.util.Calendar.YEAR) - calendarNacimiento.get(java.util.Calendar.YEAR);
-        if (calendarActual.get(java.util.Calendar.MONTH) < calendarNacimiento.get(java.util.Calendar.MONTH)
-                || (calendarActual.get(java.util.Calendar.MONTH) == calendarNacimiento.get(java.util.Calendar.MONTH)
-                && calendarActual.get(java.util.Calendar.DAY_OF_MONTH) < calendarNacimiento.get(java.util.Calendar.DAY_OF_MONTH))) {
+        Calendar nacimiento = Calendar.getInstance();
+        nacimiento.set(año, mes - 1, dia);
+        Calendar calendarioActual = Calendar.getInstance();
+        calendarioActual.setTime(fechaActual);
+        int edad = calendarioActual.get(java.util.Calendar.YEAR) - nacimiento.get(java.util.Calendar.YEAR);
+        if (calendarioActual.get(java.util.Calendar.MONTH) < nacimiento.get(java.util.Calendar.MONTH)
+                || (calendarioActual.get(java.util.Calendar.MONTH) == nacimiento.get(java.util.Calendar.MONTH)
+                && calendarioActual.get(java.util.Calendar.DAY_OF_MONTH) < nacimiento.get(java.util.Calendar.DAY_OF_MONTH))) {
             edad--;
         }
         return edad >= 13;
@@ -205,16 +216,15 @@ public class Lab1P2_JoseAcosta {
 
         for (Usuario usuario : usuarios) {
             String correoElectronico = usuario.getCorreo();
-            int contador = 1;
+
             if (correoElectronico.toLowerCase().endsWith(dominio.toLowerCase())) {
                 System.out.println("");
-                System.out.println("Usuario numero " + contador);
+                System.out.println("Usuario");
                 System.out.println("Nombre: " + usuario.getNombre());
                 System.out.println("Apellido: " + usuario.getApellido());
                 System.out.println("Edad: " + usuario.getEdad());
                 System.out.println("Correo Electrónico: " + correoElectronico);
                 System.out.println("Contraseña: " + usuario.getContraseña());
-                contador++;
 
             }
         }
