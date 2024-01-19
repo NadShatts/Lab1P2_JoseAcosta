@@ -6,6 +6,7 @@ package lab1p2_joseacosta;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Date;
 
 /**
  *
@@ -86,7 +87,7 @@ public class Lab1P2_JoseAcosta {
         String nombre = entrada.nextLine();
         System.out.println("Ingresa tu apellido: ");
         String apellido = entrada.nextLine();
-        System.out.println("Ingresa tu fecha de nacimiento (dd/mm/aaaa): ");
+        System.out.println("Ingresa tu fecha de nacimiento (dd/MM/yyyy): ");
         String fechaNacimiento = entrada.nextLine();
         System.out.println("Ingresa tu correo electrónico: ");
         System.out.println("gmail.com | outlook.com | yahoo.com | icloud.com |  rotonmail.com |  fastmail.com");
