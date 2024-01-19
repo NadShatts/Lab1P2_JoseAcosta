@@ -4,9 +4,7 @@
  */
 package lab1p2_joseacosta;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -44,15 +42,20 @@ public class Lab1P2_JoseAcosta {
                 case 2:
                     if(usuarios.isEmpty()){
                         System.out.println("No hay ningun usuario registrado. Disculpenos");
-                    }else
+                    }else{
 
                     System.out.println("Lista de Usuarios:");
                     listarTodos();
+                    }
                     break;
 
                 case 3:
+                    if(usuarios.isEmpty()){
+                        System.out.println("No hay ningun usuario registrado. Disculpenos");
+                    }else{
                     listarUsuariosPorDominio();
                     break;
+                    }
 
                 case 4:
                     System.out.println("Saliendo del Registro. Vuelva Pronto..");
@@ -78,15 +81,17 @@ public class Lab1P2_JoseAcosta {
         String correo = entrada.nextLine();
         System.out.println("Ingresa tu contraseña: ");
         String contraseña = entrada.nextLine();
-
-
-        if(!validarFechaNacimiento(fechaNacimiento)){
-            mostrarError("Fecha de nacimiento no valida");
-        }
-        
-        
-        if(!validarCorreoElectronico(correo)){
+   
+  
+            if(!validarCorreoElectronico(correo)){
             mostrarError("Correo no valido");
+            return;
+
+        }
+            
+                     if(!validarFechaNacimiento(fechaNacimiento)){
+            mostrarError("Fecha de nacimiento no valida");
+            return;
             
         }
         
@@ -106,7 +111,38 @@ public class Lab1P2_JoseAcosta {
         usuarios.add(usuario);
 
         mostrarMensaje("Usuario registrado correctamente.");
+        
+         
     }
+    
+        private static boolean validarCorreoElectronico(String correo) {
+    String regex = "^[a-zA-Z0-9_.%&$-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+
+    String[] partesCorreo = correo.split("@");
+    String nombreUsuario = partesCorreo[0];
+    String dominio = partesCorreo[1].toLowerCase();
+
+    if (!correo.matches(regex) || existeUsuarioConCorreoYDominio(nombreUsuario, dominio)) {
+        return false;
+    }
+
+    return true;
+}
+        
+        private static boolean existeUsuarioConCorreoYDominio(String nombreUsuario, String dominio) {
+    for (Usuario usuario : usuarios) {
+        String correoUsuario = usuario.getCorreo();
+        String[] partesCorreoUsuario = correoUsuario.split("@");
+        String nombreUsuarioRegistrado = partesCorreoUsuario[0];
+        String dominioRegistrado = partesCorreoUsuario[1].toLowerCase();
+
+        if (nombreUsuario.equalsIgnoreCase(nombreUsuarioRegistrado) && dominio.equals(dominioRegistrado)) {
+            return true; 
+        }
+    }
+    return false; 
+}
+    
     
         private static boolean validarFechaNacimiento(String fechaNacimiento) {
             
@@ -162,14 +198,10 @@ public class Lab1P2_JoseAcosta {
                 System.out.println("Edad: " + usuario.getEdad());
                 System.out.println("Correo Electrónico: " + correoElectronico);
                 System.out.println("Contraseña: " + usuario.getContraseña());
-
-  
        }
     }
     
-    private static boolean validarCorreoElectronico(String correoElectronico) {
-    return correoElectronico.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
-}
+    
 
 
     private static void mostrarError(String mensaje) {
@@ -182,7 +214,7 @@ private static void mostrarMensaje(String mensaje) {
 
 private static void listarUsuariosPorDominio() {
         Scanner entrada = new Scanner(System.in);
-
+    System.out.println("gmail.com | outlook.com | yahoo.com | icloud.com |  rotonmail.com |  fastmail.com");
         System.out.print("Ingrese el dominio: ");
         String dominio = entrada.nextLine();
 
