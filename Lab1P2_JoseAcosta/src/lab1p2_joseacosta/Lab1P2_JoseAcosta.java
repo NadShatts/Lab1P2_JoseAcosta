@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Date;
 import java.util.Calendar;
+import java.util.StringTokenizer;
 
 /**
  *
@@ -89,7 +90,7 @@ public class Lab1P2_JoseAcosta {
         System.out.println("Ingresa tu fecha de nacimiento (dd/MM/yyyy): ");
         String fechaNacimiento = entrada.nextLine();
         System.out.println("Ingresa tu correo electrónico: ");
-        System.out.println("gmail.com | outlook.com | yahoo.com | icloud.com |  rotonmail.com |  fastmail.com");
+        System.out.println("@gmail.com | @outlook.com | @yahoo.com | @icloud.com |  @rotonmail.com |  @fastmail.com");
         String correo = entrada.nextLine();
         System.out.println("Ingresa tu contraseña: ");
         String contraseña = entrada.nextLine();
@@ -209,15 +210,20 @@ private static boolean esDominioValido(String dominio) {
     }
 
     private static void listarUsuariosPorDominio() {
-        Scanner entrada = new Scanner(System.in);
-        System.out.println("gmail.com | outlook.com | yahoo.com | icloud.com |  rotonmail.com |  fastmail.com");
-        System.out.print("Ingrese el dominio: ");
-        String dominio = entrada.nextLine();
+    Scanner entrada = new Scanner(System.in);
+    System.out.println("gmail.com | outlook.com | yahoo.com | icloud.com | protonmail.com | fastmail.com");
+    System.out.print("Ingrese el dominio: ");
+    String dominio = entrada.nextLine();
 
-        for (Usuario usuario : usuarios) {
-            String correoElectronico = usuario.getCorreo();
+    for (Usuario usuario : usuarios) {
+        String correoElectronico = usuario.getCorreo();
+        StringTokenizer tokenizer = new StringTokenizer(correoElectronico, "@");
 
-            if (correoElectronico.toLowerCase().endsWith(dominio.toLowerCase())) {
+        if (tokenizer.countTokens() == 2) {
+            String nombreUsuario = tokenizer.nextToken();
+            String dominioUsuario = tokenizer.nextToken().toLowerCase();
+
+            if (dominioUsuario.equals(dominio.toLowerCase())) {
                 System.out.println("");
                 System.out.println("Usuario");
                 System.out.println("Nombre: " + usuario.getNombre());
@@ -225,8 +231,8 @@ private static boolean esDominioValido(String dominio) {
                 System.out.println("Edad: " + usuario.getEdad());
                 System.out.println("Correo Electrónico: " + correoElectronico);
                 System.out.println("Contraseña: " + usuario.getContraseña());
-
             }
         }
+    }
     }
 }
